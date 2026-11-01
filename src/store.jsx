@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { products } from './data'
-import { track, sendOrder } from './crm'
+import { track, sendOrder, checkPromo, crmEnabled } from './crm'
 
 const Ctx = createContext(null)
 export const useStore = () => useContext(Ctx)
@@ -19,7 +19,7 @@ function usePersist(key, initial, clean = (x) => x) {
 }
 
 // Промокод с листовки: -10% на первый заказ (клиентская проверка — для небольшого магазина достаточно)
-export const PROMO = { code: 'ХВОСТИК10', pct: 10 }
+export const PROMO = { code: 'ХВОСТИК10', kind: 'pct', value: 10, firstOrder: true } // запасной вариант, если CRM не подключена
 
 const byId = Object.fromEntries(products.map((p) => [p.id, p]))
 // В избранном — только существующие товары, без повторов (раньше там оставались id из старой версии сайта)
@@ -55,19 +55,27 @@ export function StoreProvider({ children }) {
     const toggleFav = (id) => setFav((f) => (f.includes(id) ? f.filter((x) => x !== id) : [...f, id]))
     const toggleCompare = (id) => setCompare((c) => (c.includes(id) ? c.filter((x) => x !== id) : c.length >= 4 ? c : [...c, id]))
     const firstOrderEligible = orders.length === 0 && !promoRedeemed
-    const applyPromo = (raw) => {
+    // промокоды заводятся в CRM (раздел «Промокоды»); без CRM работает только PROMO
+    const applyPromo = async (raw, phone = user?.phone || '') => {
       const code = (raw || '').trim().toUpperCase()
       if (!code) return { ok: false, msg: 'Введите промокод' }
+      const r = await checkPromo(code, phone)
+      if (r) {
+        if (!r.ok) return { ok: false, msg: r.msg }
+        setPromo({ code: r.code, kind: r.kind, value: r.value, firstOrder: r.firstOrder })
+        return { ok: true }
+      }
       if (!firstOrderEligible) return { ok: false, msg: 'Промокод действует только на первый заказ' }
       if (code !== PROMO.code) return { ok: false, msg: 'Такого промокода нет — проверьте написание' }
       setPromo(PROMO)
       return { ok: true }
     }
     const clearPromo = () => setPromo(null)
-    const discount = promo && firstOrderEligible ? Math.round(total * promo.pct / 100) : 0
+    const promoOk = promo && (!promo.firstOrder || firstOrderEligible || crmEnabled)
+    const discount = !promoOk ? 0 : promo.kind === 'fixed' ? Math.min(total, promo.value) : Math.round(total * promo.value / 100)
     const totalWithDiscount = total - discount
     const placeOrder = (contact) => {
-      const o = { n: String(Date.now()).slice(-6), date: new Date().toLocaleDateString('ru-RU'), items, total: totalWithDiscount, promo: discount ? PROMO.code : null, contact }
+      const o = { n: String(Date.now()).slice(-6), date: new Date().toLocaleDateString('ru-RU'), items, total: totalWithDiscount, promo: discount ? promo.code : null, contact }
       setOrders((s) => [o, ...s])
       sendOrder({ ...o, discount }) // в CRM (если подключена)
       if (!user) setUser({ name: contact.name, phone: contact.phone })

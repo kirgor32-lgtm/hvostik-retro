@@ -59,10 +59,19 @@ export function initCrm() {
 
 export const track = (type, data) => { if (crmEnabled && analyticsAllowed()) load().then((crm) => crm?.track(type, data)) }
 
+// Проверка промокода в CRM. null — CRM не подключена или недоступна (тогда сайт проверяет сам)
+export async function checkPromo(code, phone = '') {
+  if (!crmEnabled) return null
+  const crm = await load()
+  if (!crm?.promo) return null
+  try { return await crm.promo(code, phone) } catch { return null }
+}
+
 export function sendOrder(o) {
   if (!crmEnabled) return
   sendOrQueue('order', {
     number: o.n,
+    paid: !!o.paid, // оплачен онлайн → в CRM сразу «Подтверждён»
     items: o.items.map((i) => ({ id: i.id, name: `${i.line} — ${i.name}`, w: i.w, qty: i.qty, price: i.price })),
     discount: o.discount || 0,
     promo: o.promo || '',

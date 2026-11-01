@@ -1169,11 +1169,12 @@ function PromoBox() {
   const st = useStore()
   const [code, setCode] = useState('')
   const [msg, setMsg] = useState(null) // { ok, text }
-  if (!st.firstOrderEligible) return null
+  const [busy, setBusy] = useState(false)
+  if (!st.firstOrderEligible && !crmEnabled) return null
   if (st.promo) {
     return (
       <div className="mb-4 flex items-center justify-between gap-2 rounded-[10px] bg-violet-soft px-4 py-3 text-[14px] font-semibold text-violet-dark">
-        <span>Промокод {st.promo.code} применён — скидка {st.promo.pct}%</span>
+        <span>Промокод {st.promo.code} применён — скидка {st.promo.kind === 'fixed' ? rub(st.promo.value) : st.promo.value + '%'}</span>
         <button type="button" onClick={st.clearPromo} className="shrink-0 text-txt-2 underline">Убрать</button>
       </div>
     )
@@ -1182,8 +1183,8 @@ function PromoBox() {
     <div className="mb-4">
       <div className="flex gap-2">
         <Input value={code} onChange={(e) => { setCode(e.target.value); setMsg(null) }} placeholder="Промокод с листовки" className="h-11 rounded-[10px] bg-white text-[16px]" />
-        <button type="button" onClick={() => { const r = st.applyPromo(code); setMsg(r.ok ? { ok: true, text: 'Скидка применена!' } : { ok: false, text: r.msg }) }}
-          className="h-11 shrink-0 rounded-[10px] bg-ink px-4 text-sm font-semibold text-white">Применить</button>
+        <button type="button" disabled={busy} onClick={async () => { setBusy(true); try { const r = await st.applyPromo(code); setMsg(r.ok ? { ok: true, text: 'Скидка применена!' } : { ok: false, text: r.msg }) } finally { setBusy(false) } }}
+          className="h-11 shrink-0 rounded-[10px] bg-ink px-4 text-sm font-semibold text-white disabled:opacity-60">{busy ? 'Проверяю…' : 'Применить'}</button>
       </div>
       {msg && <p className={cn('mt-1.5 text-[13px]', msg.ok ? 'text-emerald-600' : 'text-red-600')}>{msg.text}</p>}
     </div>
