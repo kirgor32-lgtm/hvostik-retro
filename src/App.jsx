@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils'
 import { StoreProvider, useStore, rub, fmtPhone } from './store'
 import { RouterProvider, useRoute, Link } from './router'
 import { sendCode, checkCode, linkedChannels, setLinked, channelNames } from './auth'
+import { track, sendLead, crmEnabled } from './crm'
 import {
   BASE, contacts, seller, products, kinds, searchHints, benefits, stats, checks, posts, contactTopics, faq, pages,
   productPath, minPrice, img, declaration, manufacturer, minAll,
@@ -568,14 +569,18 @@ function LeadForm({ topic, compact, onSubmit, cta = 'Отправить', doneTe
     setErr(er)
     if (Object.keys(er).length) return
     setState('send')
-    setTimeout(() => { onSubmit?.({ name: f.name.trim(), phone: f.phone }); setState('done') }, 700)
+    setTimeout(() => {
+      if (onSubmit) onSubmit({ name: f.name.trim(), phone: f.phone })
+      else sendLead({ name: f.name.trim(), phone: f.phone, topic, msg: f.msg.trim() }) // заявка → CRM
+      setState('done')
+    }, 700)
   }
   if (state === 'done')
     return (
       <div className="rounded-[16px] bg-white p-8 text-center">
         <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-violet-dark text-white"><Check className="size-7" /></div>
         <h3 className="mt-4 text-2xl font-extrabold">Спасибо, {f.name.trim()}!</h3>
-        <p className="mt-2 text-txt-2">{doneText || 'Мы на связи — ответим и поможем подобрать то, что понравится питомцу.'} Это демо — заявка никуда не ушла.</p>
+        <p className="mt-2 text-txt-2">{doneText || 'Мы на связи — ответим и поможем подобрать то, что понравится питомцу.'}{crmEnabled ? '' : ' Это демо — заявка никуда не ушла.'}</p>
       </div>
     )
   return (
@@ -695,6 +700,7 @@ function ProductPage({ p }) {
   const k = kinds[p.kind]
   const [vi, setVi] = useState(p.weights.length > 2 ? 1 : 0)
   useEffect(() => setVi(p.weights.length > 2 ? 1 : 0), [p])
+  useEffect(() => track('view_product', { id: p.id }), [p.id])
   const v = p.weights[vi]
   const related = products.filter((x) => x.kind === p.kind && x.id !== p.id)
   const specs = [
@@ -953,7 +959,7 @@ function CookieBanner() {
     window.addEventListener('hv-cookies', reopen)
     return () => window.removeEventListener('hv-cookies', reopen)
   }, [])
-  const save = (v) => { try { localStorage.setItem('hv-cookies', JSON.stringify({ v, at: new Date().toISOString() })) } catch { /* пусто */ } setShow(false) }
+  const save = (v) => { try { localStorage.setItem('hv-cookies', JSON.stringify({ v, at: new Date().toISOString() })) } catch { /* пусто */ } setShow(false); window.dispatchEvent(new Event('hv-consent')) }
   if (!show) return null
   const policy = <Link to={pages.privacy.path} className="text-violet-dark underline">политике конфиденциальности</Link>
   return (
@@ -1027,7 +1033,7 @@ function Panels({ nav }) {
                 {st.discount > 0 && <div className="flex justify-between text-sm text-txt-2"><span>Скидка по промокоду {st.promo.code}</span><span>−{rub(st.discount)}</span></div>}
                 <div className="flex justify-between"><span>Итого</span><b>{rub(st.discount ? st.totalWithDiscount : st.total)}</b></div>
               </div>
-              <Button onClick={() => { close(); st.setCheckout(true) }} className={cn(inkBtn, 'h-12 w-full text-base')}>Перейти к оформлению</Button>
+              <Button onClick={() => { close(); track('checkout_start'); st.setCheckout(true) }} className={cn(inkBtn, 'h-12 w-full text-base')}>Перейти к оформлению</Button>
             </div>
           )}
         </SheetContent>

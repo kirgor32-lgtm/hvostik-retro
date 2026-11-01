@@ -3,8 +3,10 @@ import { createRoot, hydrateRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { stripBase, match, head, applyHead } from './seo'
+import { initCrm } from './crm'
 
 if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
+initCrm()
 
 const el = document.getElementById('root')
 const path = stripBase(location.pathname)

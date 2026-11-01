@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { products } from './data'
+import { track, sendOrder } from './crm'
 
 const Ctx = createContext(null)
 export const useStore = () => useContext(Ctx)
@@ -42,11 +43,11 @@ export function StoreProvider({ children }) {
 
   const api = useMemo(() => {
     const key = (id, w) => `${id}|${w}`
-    const add = (p, v) => setItems((s) => {
+    const add = (p, v) => { track('add_to_cart', { id: p.id, name: p.name, w: v.w, price: v.price }); setItems((s) => {
       const k = key(p.id, v.w)
       return s.some((i) => i.key === k) ? s.map((i) => (i.key === k ? { ...i, qty: i.qty + 1 } : i))
         : [...s, { key: k, id: p.id, line: p.line, name: p.name, w: v.w, price: v.price, qty: 1 }]
-    })
+    }) }
     const setQty = (k, q) => setItems((s) => (q <= 0 ? s.filter((i) => i.key !== k) : s.map((i) => (i.key === k ? { ...i, qty: q } : i))))
     const qtyOf = (id, w) => items.find((i) => i.key === key(id, w))?.qty || 0
     const count = items.reduce((s, i) => s + i.qty, 0)
@@ -68,6 +69,7 @@ export function StoreProvider({ children }) {
     const placeOrder = (contact) => {
       const o = { n: String(Date.now()).slice(-6), date: new Date().toLocaleDateString('ru-RU'), items, total: totalWithDiscount, promo: discount ? PROMO.code : null, contact }
       setOrders((s) => [o, ...s])
+      sendOrder({ ...o, discount }) // в CRM (если подключена)
       if (!user) setUser({ name: contact.name, phone: contact.phone })
       if (discount) setPromoRedeemed(true)
       setItems([])
