@@ -2,6 +2,15 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/onest";
+@import "@fontsource/rubik-mono-one/cyrillic.css";
+@import "@fontsource/rubik-mono-one/latin.css";
+@import "@fontsource/playfair-display/cyrillic-700.css";
+@import "@fontsource/playfair-display/cyrillic-900.css";
+@import "@fontsource/playfair-display/latin-700.css";
+@import "@fontsource/playfair-display/latin-900.css";
+@import "@fontsource/playfair-display/cyrillic-700-italic.css";
+@import "@fontsource/lobster/cyrillic.css";
+@import "@fontsource/lobster/latin.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -49,24 +58,24 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: #2e2c38;
-    --card: oklch(1 0 0);
-    --card-foreground: #2e2c38;
-    --popover: oklch(1 0 0);
-    --popover-foreground: #2e2c38;
-    --primary: #2e2c38;
-    --primary-foreground: #ffffff;
-    --secondary: #f4f4f4;
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: #f4f4f4;
-    --muted-foreground: #66636f;
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
+    --background: #fbf5e6;
+    --foreground: #2b2320;
+    --card: #fffaf0;
+    --card-foreground: #2b2320;
+    --popover: #fffaf0;
+    --popover-foreground: #2b2320;
+    --primary: #2b2320;
+    --primary-foreground: #fffaf0;
+    --secondary: #f3ead3;
+    --secondary-foreground: #2b2320;
+    --muted: #f3ead3;
+    --muted-foreground: #6b5a4e;
+    --accent: #f3ead3;
+    --accent-foreground: #2b2320;
     --destructive: oklch(0.577 0.245 27.325);
-    --border: #e8ecf0;
-    --input: #d8d8d8;
-    --ring: #8f82ff;
+    --border: #e6d9bb;
+    --input: #cbb991;
+    --ring: #ff8a2a;
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
@@ -131,24 +140,57 @@
     @apply font-sans;
     }
 }
-/* ---- «Хвостик»: токены в духе крупного зоомагазина ---- */
+/* ---- «Хвостик»: ретро-вывеска (по листовке «Мятная классика») ---- */
 @theme {
-  --color-ink: #2e2c38;
-  --color-ink-2: #45424f;
-  --color-gray-1: #f4f4f4;
-  --color-gray-2: #e8ecf0;
-  --color-gray-3: #d8d8d8;
-  --color-txt-2: #66636f;
-  --color-sun: #ffd62e;
-  --color-sun-soft: #fff4c2;
-  --color-violet: #8f82ff;
-  --color-violet-dark: #5242d6;
-  --color-violet-soft: #eeebff;
-  --color-tang: #ff6a00;
+  --color-white: #fffaf0;
+  --color-ink: #2b2320;
+  --color-ink-2: #4a3a30;
+  --color-gray-1: #f3ead3;
+  --color-gray-2: #e6d9bb;
+  --color-gray-3: #cbb991;
+  --color-txt-2: #6b5a4e;
+  --color-sun: #ff8a2a;
+  --color-sun-soft: #ffe3c4;
+  --color-violet: #ff8a2a;
+  --color-violet-dark: #c8471a;
+  --color-violet-soft: #d4efeb;
+  --color-tang: #e2561a;
+  --color-mint: #9fd6cf;
+  --color-mint-soft: #d4efeb;
+  --color-orange: #ff8a2a;
   --color-myau: #f7c6d0;
   --color-gav: #d9455f;
-  --shadow-card: 0 2px 12px rgba(46, 44, 56, 0.07);
+  --shadow-card: 4px 4px 0 #2b2320;
+  --font-retro: 'Rubik Mono One', 'Onest Variable', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-script: 'Lobster', cursive;
 }
+@layer base {
+  h1, h2 { font-family: var(--font-serif); font-weight: 900; }
+}
+/* мятный фон с диагональной штриховкой */
+.retro-mint { background-color: #9fd6cf; background-image: repeating-linear-gradient(45deg, rgba(255,255,255,.2) 0 1.5px, transparent 1.5px 8px); }
+.retro-paper { background-color: #f3ead3; background-image: repeating-linear-gradient(45deg, rgba(43,35,32,.035) 0 1.5px, transparent 1.5px 8px); }
+/* двойная белая рамка внутри блока, как на листовке */
+.retro-frame { position: relative; isolation: isolate; }
+.retro-frame::before, .retro-frame::after { content: ''; position: absolute; pointer-events: none; z-index: 0; border-radius: 8px; }
+.retro-frame::before { inset: 10px; border: 2px solid #fffaf0; }
+.retro-frame::after { inset: 15px; border: 1px solid rgba(255,250,240,.7); border-radius: 5px; }
+/* лучи-солнце за товаром */
+.retro-burst { position: absolute; border-radius: 50%; pointer-events: none;
+  background: repeating-conic-gradient(#f3ead3 0 7.5deg, transparent 7.5deg 15deg); opacity: .55;
+  -webkit-mask: radial-gradient(circle, #000 0 33%, transparent 62%); mask: radial-gradient(circle, #000 0 33%, transparent 62%); }
+/* надпись-вывеска: оранжевая заливка, тёмная обводка и сдвинутая тень */
+.retro-word { font-family: var(--font-retro); color: #ff8a2a; -webkit-text-stroke: 2px #2b2320; paint-order: stroke fill; text-shadow: 3px 3px 0 #2b2320; letter-spacing: 0; }
+.retro-word-sm { font-family: var(--font-retro); color: #ff8a2a; -webkit-text-stroke: 1.2px #2b2320; paint-order: stroke fill; text-shadow: 2px 2px 0 #2b2320; }
+.retro-word-light { font-family: var(--font-retro); color: #ff8a2a; }
+/* лента с вырезами на концах */
+.retro-ribbon { clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 50%, 100% 100%, 0 100%, 14px 50%); padding-inline: 30px; }
+/* круглая печать-скидка */
+.retro-seal { position: relative; border-radius: 50%; background: #e2561a; color: #fffaf0; box-shadow: 0 0 0 3px #2b2320; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.retro-seal::before { content: ''; position: absolute; inset: 6px; border-radius: 50%; border: 1.5px dashed #fffaf0; }
+.retro-lines { display: flex; align-items: center; gap: 12px; }
+.retro-lines::before, .retro-lines::after { content: ''; height: 1.5px; width: 34px; background: currentColor; }
 html { scroll-behavior: smooth; }
 body { -webkit-font-smoothing: antialiased; }
 .wrap { width: 100%; max-width: 1320px; margin-inline: auto; padding-inline: 20px; }

@@ -21,7 +21,7 @@ import {
 } from './data'
 
 const icons = { Drumstick, Scale, HeartPulse, ShieldCheck, Factory, BadgeCheck }
-const inkBtn = 'h-11 rounded-[10px] bg-ink px-5 text-sm font-semibold text-white hover:bg-ink-2'
+const inkBtn = 'h-11 rounded-[10px] border-2 border-ink bg-ink px-5 text-sm font-bold text-white shadow-[3px_3px_0_#e2561a] transition hover:translate-x-px hover:translate-y-px hover:bg-ink-2 hover:shadow-[2px_2px_0_#e2561a]'
 const ALL = { kind: 'all', age: 'all', q: '' }
 const byId = (id) => products.find((p) => p.id === id)
 const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1)
@@ -103,7 +103,7 @@ function Logo({ light, onClick }) {
   return (
     <Link to="" onClick={onClick} className="flex shrink-0 items-center gap-2.5" aria-label="Хвостик — на главную">
       <img src={`${BASE}${light ? 'logo-light.svg' : 'favicon.svg'}`} alt="" width="44" height="44" className="size-10 sm:size-11" />
-      <span className={cn('text-[22px] font-extrabold leading-none tracking-tight', light && 'text-white')}>Хвостик</span>
+      <span className={cn('text-[15px] uppercase leading-none min-[400px]:text-[17px] sm:text-[21px]', light ? 'retro-word-light' : 'retro-word-sm')}>Хвостик</span>
     </Link>
   )
 }
@@ -122,7 +122,7 @@ const mainNav = [
 function Header({ filter, nav }) {
   const st = useStore()
   return (
-    <header className="sticky top-0 z-40 border-b border-gray-2 bg-white">
+    <header className="sticky top-0 z-40 border-b-[4px] border-double border-ink bg-white">
       <div className="wrap flex h-[64px] items-center gap-3 lg:h-[72px] lg:gap-6">
         {/* бургер — только на телефонах и планшетах */}
         <button className="-ml-2 flex size-11 items-center justify-center lg:hidden" onClick={() => st.setPanel('menu')} aria-label="Открыть меню"><Menu /></button>
@@ -140,7 +140,7 @@ function Header({ filter, nav }) {
       </div>
       <div className="wrap pb-3 lg:hidden"><SearchBox filter={filter} nav={nav} /></div>
       {/* меню разделов — только на компьютере */}
-      <nav aria-label="Разделы" className="wrap hidden gap-8 pb-3 text-[15px] lg:flex">
+      <nav aria-label="Разделы" className="wrap hidden gap-8 pb-3 font-serif text-[15px] font-bold lg:flex">
         {mainNav.map(([l, to]) => <Link key={to} to={to} className="hover:text-violet-dark">{l}</Link>)}
       </nav>
     </header>
@@ -224,7 +224,7 @@ function Mark({ text, q }) {
   const w = q.split(/\s+/)[0]
   const i = w ? text.toLowerCase().indexOf(w) : -1
   if (i < 0) return text
-  return <>{text.slice(0, i)}<mark className="bg-violet-soft">{text.slice(i, i + w.length)}</mark>{text.slice(i + w.length)}</>
+  return <>{text.slice(0, i)}<mark className="bg-mint-soft">{text.slice(i, i + w.length)}</mark>{text.slice(i + w.length)}</>
 }
 
 function IconBtn({ children, label, n, dot, onClick }) {
@@ -241,7 +241,8 @@ function IconBtn({ children, label, n, dot, onClick }) {
 function SectionTitle({ children, sub, as: H = 'h2' }) {
   return (
     <div>
-      <H className="text-balance text-[28px] font-extrabold leading-[1.05] tracking-tight md:text-[40px]">{children}</H>
+      <div aria-hidden className="mb-2 text-[13px] tracking-[.45em] text-tang">★ ★ ★</div>
+      <H className="text-balance font-retro text-[22px] font-normal uppercase leading-[1.15] md:text-[32px]">{children}</H>
       {sub && <p className="mt-3 max-w-[680px] text-[17px] text-txt-2">{sub}</p>}
     </div>
   )
@@ -283,26 +284,29 @@ function Home({ filter, setFilter, nav, topic, setTopic }) {
 function Hero({ nav }) {
   return (
     <section className="wrap pt-5">
-      <div className="relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 overflow-hidden rounded-[20px] bg-gradient-to-r from-[#fdeef1] via-[#fbe2e7] to-[#f6d2da] px-4 py-5 sm:block sm:px-6 sm:py-10 md:px-14 md:py-14">
+      <div className="retro-mint retro-frame relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 overflow-hidden rounded-[14px] border-[5px] border-[#f3ead3] px-5 py-6 shadow-[0_0_0_2px_#2b2320] sm:block sm:px-9 sm:py-12 md:px-14 md:py-14">
+        <div aria-hidden className="retro-burst hidden md:block md:right-[-120px] md:top-1/2 md:size-[620px] md:-translate-y-1/2 xl:right-[-60px] xl:size-[760px]" />
         <div className="contents sm:relative sm:z-10 sm:block sm:max-w-[380px] xl:max-w-[560px]">
-          <span className="hidden rounded-full bg-white px-3 py-1 text-xs font-semibold text-ink sm:inline-block">Бесплатная доставка по Санкт-Петербургу</span>
-          <h1 className="col-span-2 text-balance text-[22px] font-extrabold leading-[1.15] tracking-tight [overflow-wrap:anywhere] sm:mt-5 sm:text-[32px] sm:leading-[1.1] xl:text-[54px]">Корма «Хвостик» для кошек и собак в Санкт-Петербурге</h1>
+          <span className="retro-lines hidden font-serif text-[13px] font-bold uppercase tracking-[.25em] text-ink sm:flex">Бесплатная доставка по СПб</span>
+          <h1 className="relative col-span-2 text-balance text-[24px] leading-[1.15] [overflow-wrap:anywhere] sm:mt-5 sm:text-[34px] sm:leading-[1.1] xl:max-w-[470px] xl:text-[44px]">Корма <span className="retro-word inline-block text-[.82em] uppercase">«Хвостик»</span> для кошек и собак в Санкт-Петербурге</h1>
           <p className="col-start-1 mt-2 self-end text-[13px] leading-snug text-txt-2 sm:hidden">8 рецептов · от {minAll} ₽ · бесплатная доставка</p>
-          <p className="mt-5 hidden max-w-[470px] text-lg leading-snug sm:block xl:text-xl">
+          <div className="retro-ribbon mt-5 hidden h-10 w-fit items-center bg-ink font-serif text-[15px] font-bold uppercase tracking-[.15em] text-white sm:flex">8 рецептов · от {minAll} ₽</div>
+          <p className="mt-4 hidden max-w-[470px] text-lg leading-snug sm:block xl:text-xl">
             Хвостик.МЯУ и Хвостик.ГАВ — восемь сухих рецептов: для взрослых, котят, щенков, стерилизованных кошек и мелких пород. От {minAll} ₽.
           </p>
           <div className="col-start-1 mt-3 flex min-w-0 flex-col gap-2 self-start sm:mt-8 sm:flex-row sm:flex-wrap sm:gap-3">
             <Link to={kinds.cat.path} className={cn(inkBtn, 'flex h-10 items-center justify-center px-3 text-[14px] sm:h-[52px] sm:px-7 sm:text-base')}>Корм для кошек</Link>
-            <Link to={kinds.dog.path} className="flex h-10 items-center justify-center rounded-[10px] bg-white px-3 text-[14px] font-semibold hover:bg-gray-1 sm:h-[52px] sm:px-7 sm:text-base">Корм для собак</Link>
+            <Link to={kinds.dog.path} className="flex h-10 items-center justify-center rounded-[10px] border-2 border-ink bg-white px-3 text-[14px] font-bold shadow-[3px_3px_0_#2b2320] transition hover:translate-x-px hover:translate-y-px hover:shadow-[2px_2px_0_#2b2320] sm:h-[52px] sm:px-7 sm:text-base">Корм для собак</Link>
           </div>
         </div>
         <div className="pointer-events-none col-start-2 row-span-2 row-start-2 mt-2 flex shrink-0 sm:hidden md:flex items-center justify-center sm:absolute sm:mt-0 sm:inset-x-0 sm:bottom-0 sm:top-0 sm:items-end sm:justify-end sm:pb-6 sm:pr-12 md:pr-12">
           <img src={img('myau-steril')} {...IMG} alt="Упаковка корма Хвостик.МЯУ для стерилизованных кошек" fetchPriority="high" className="relative z-10 h-auto w-[68px] -rotate-6 drop-shadow-lg sm:w-[120px] xl:w-[190px]" />
           <img src={img('gav-small')} {...IMG} alt="Упаковка корма Хвостик.ГАВ для собак мелких пород" fetchPriority="high" className="-ml-3 h-auto w-[68px] rotate-3 drop-shadow-lg sm:-ml-4 sm:w-[120px] xl:w-[190px]" />
           <img src={img('myau-kitten')} {...IMG} alt="" className="-ml-6 hidden h-auto w-[160px] rotate-12 drop-shadow-lg xl:block" />
+          <div className="retro-seal absolute right-6 top-8 z-20 hidden size-[118px] lg:flex xl:right-10 xl:top-10 xl:size-[132px]"><b className="font-retro text-[26px] font-normal leading-none xl:text-[30px]">−10%</b><span className="mt-1 text-[11px] font-extrabold uppercase leading-tight">первый<br />заказ</span></div>
         </div>
       </div>
-      <div className="no-scrollbar mt-3 grid grid-flow-col gap-3 overflow-x-auto md:grid-cols-4">
+      <div className="no-scrollbar mt-4 grid grid-flow-col gap-3 overflow-x-auto pb-1 pr-1 md:grid-cols-4">
         {[
           ['Бесплатная доставка', 'до пунктов 5Post', Truck, pages.delivery.path],
           ['Подбор корма', 'по возрасту и весу', Sparkles, null, 'pick'],
@@ -311,12 +315,12 @@ function Hero({ nav }) {
         ].map(([a, b, I, to, t]) => {
           const inner = (
             <>
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-white text-violet-dark"><I className="size-5" /></span>
+              <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-mint-soft text-violet-dark"><I className="size-5" /></span>
               <span className="flex-1"><span className="block text-[15px] font-semibold">{a}</span><span className="text-sm text-txt-2">{b}</span></span>
               <ChevronRight className="size-5 text-txt-2" />
             </>
           )
-          const cls = 'flex min-w-[220px] items-center gap-3 rounded-[14px] bg-gray-1 px-3 py-3 text-left sm:min-w-[240px] sm:px-4 sm:py-4 transition-colors hover:bg-gray-2'
+          const cls = 'flex min-w-[220px] items-center gap-3 rounded-[12px] border-2 border-ink bg-white px-3 py-3 text-left sm:min-w-[240px] sm:px-4 sm:py-4 transition-colors hover:bg-gray-1'
           return to ? <Link key={a} to={to} className={cls}>{inner}</Link> : <button key={a} onClick={() => nav.contact(t)} className={cls}>{inner}</button>
         })}
       </div>
@@ -332,8 +336,8 @@ function Benefits() {
         {benefits.map((b) => {
           const I = icons[b.icon]
           return (
-            <div key={b.title} className="flex gap-4 rounded-[16px] bg-gray-1 p-6">
-              <span className="flex size-14 shrink-0 items-center justify-center rounded-[14px] bg-violet-soft text-violet-dark"><I className="size-7" /></span>
+            <div key={b.title} className="retro-paper flex gap-4 rounded-[14px] border-2 border-ink p-6">
+              <span className="flex size-14 shrink-0 items-center justify-center rounded-full border-2 border-ink bg-mint text-ink"><I className="size-7" /></span>
               <div>
                 <h3 className="text-lg font-bold">{b.title}</h3>
                 <p className="mt-1 text-[15px] text-txt-2">{b.text}</p>
@@ -353,7 +357,7 @@ function Catalog({ filter, setFilter, title, fixedKind, as }) {
   const ages = [['all', 'Любой возраст'], ['adult', 'Взрослым'], ...(kind !== 'dog' ? [['kitten', 'Котятам']] : []), ...(kind !== 'cat' ? [['puppy', 'Щенкам']] : [])]
   const setKind = (v) => setFilter((f) => ({ ...f, kind: v, age: (v === 'cat' && f.age === 'puppy') || (v === 'dog' && f.age === 'kitten') ? 'all' : f.age }))
   return (
-    <section id="catalog" className="scroll-mt-44 bg-gray-1 py-14">
+    <section id="catalog" className="retro-mint scroll-mt-44 border-y-[4px] border-double border-ink py-14">
       <div className="wrap">
         {title && <SectionTitle as={as}>{title}</SectionTitle>}
         <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
@@ -386,8 +390,8 @@ function Pills({ label, items, value, onChange, small }) {
     <div role="group" aria-label={label} className="flex flex-wrap gap-2">
       {items.map(([v, l]) => (
         <button key={v} aria-pressed={value === v} onClick={() => onChange(v)}
-          className={cn('rounded-full transition-colors', small ? 'h-9 px-4 text-sm' : 'h-10 px-5 text-[15px]',
-            value === v ? (small ? 'bg-violet-dark text-white' : 'bg-ink text-white') : 'bg-white text-ink hover:bg-gray-2')}>{l}</button>
+          className={cn('rounded-full border-2 font-semibold transition-colors', small ? 'h-9 px-4 text-sm' : 'h-10 px-5 text-[15px]',
+            value === v ? (small ? 'border-violet-dark bg-violet-dark text-white' : 'border-ink bg-ink text-white') : 'border-ink bg-white text-ink hover:bg-gray-1')}>{l}</button>
       ))}
     </div>
   )
@@ -401,16 +405,16 @@ function ProductCard({ p }) {
   const faved = st.fav.includes(p.id)
   const compared = st.compare.includes(p.id)
   return (
-    <article className="flex flex-col rounded-[16px] bg-white p-3 shadow-card sm:p-4">
+    <article className="flex flex-col rounded-[14px] border-2 border-ink bg-white p-3 shadow-card sm:p-4">
       <div className={cn('relative flex h-[190px] items-center justify-center overflow-hidden rounded-[12px] sm:h-[250px]', p.bg)}>
         <Link to={productPath(p)} className="flex h-full w-full items-center justify-center p-3 sm:p-4" tabIndex={-1} aria-hidden>
           <img src={img(p.id)} {...IMG} loading="lazy" alt={`${p.line} — ${p.short}, ${p.taste}`} className="h-full w-auto object-contain transition hover:scale-105" />
         </Link>
-        <span className="absolute left-2 top-2 rounded-[8px] bg-white/90 px-2 py-1 text-xs font-bold sm:left-3 sm:top-3">{p.kind === 'cat' ? 'Кошкам' : 'Собакам'}</span>
+        <span className="absolute left-2 top-2 rounded-[6px] border-[1.5px] border-ink bg-white px-2 py-0.5 font-serif text-xs font-bold uppercase tracking-wider sm:left-3 sm:top-3">{p.kind === 'cat' ? 'Кошкам' : 'Собакам'}</span>
         <FavBtn faved={faved} onClick={() => st.toggleFav(p.id)} />
       </div>
       <div className="mt-3 flex flex-wrap items-baseline gap-x-2">
-        <span className="text-[19px] font-extrabold sm:text-[22px]">{rub(v.price)}</span>
+        <span className="font-serif text-[20px] font-black sm:text-[24px]">{rub(v.price)}</span>
         <span className="text-xs text-txt-2">{rub(perKg(v))}/кг</span>
       </div>
       <h3 className="mt-1 text-sm leading-snug sm:text-[15px]">
@@ -459,20 +463,20 @@ function FavBtn({ faved, onClick, className }) {
 function Mission() {
   return (
     <section className="wrap py-16">
-      <div className="grid overflow-hidden rounded-[20px] bg-ink text-white md:grid-cols-[1.2fr_1fr]">
+      <div className="grid overflow-hidden rounded-[14px] border-[5px] border-[#f3ead3] bg-ink text-white shadow-[0_0_0_2px_#2b2320] md:grid-cols-[1.2fr_1fr]">
         <div className="p-8 md:p-14">
-          <span className="text-sm lowercase text-[#c9c2ff]">Наша миссия</span>
+          <span className="font-script text-xl text-[#9fd6cf]">Наша миссия</span>
           <h2 className="mt-4 text-[28px] font-extrabold leading-[1.08] md:text-[42px]">Радовать каждого хвостатого — от первой гранулы до пустой миски</h2>
           <p className="mt-6 max-w-[520px] text-lg text-white/80">
             Корм, который не просто насыщает, а помогает питомцу жить здоровой и активной жизнью. Полнорационные рецепты с натуральным мясом от российского завода.
           </p>
-          <Link to={pages.about.path} className="mt-6 inline-flex items-center gap-1 font-semibold text-[#c9c2ff] hover:text-white">О бренде и производителе <ChevronRight className="size-4" /></Link>
+          <Link to={pages.about.path} className="mt-6 inline-flex items-center gap-1 font-semibold text-[#9fd6cf] hover:text-white">О бренде и производителе <ChevronRight className="size-4" /></Link>
         </div>
-        <div className="flex min-h-[260px] items-center justify-center bg-violet-dark">
+        <div className="relative flex min-h-[260px] items-center justify-center overflow-hidden bg-tang [background-image:repeating-linear-gradient(45deg,rgba(255,250,240,.12)_0_1.5px,transparent_1.5px_8px)]">
           <div className="grid grid-cols-2 gap-3 p-8 text-center">
             {stats.map(([n, l]) => (
-              <div key={l} className="rounded-[14px] bg-white/12 px-4 py-5">
-                <div className="text-[28px] font-extrabold leading-none">{n}</div>
+              <div key={l} className="rounded-full border-2 border-dashed border-white/70 px-4 py-6">
+                <div className="font-retro text-[24px] leading-none">{n}</div>
                 <div className="mt-2 text-sm lowercase text-white">{l}</div>
               </div>
             ))}
@@ -485,13 +489,13 @@ function Mission() {
 
 function Checks() {
   return (
-    <section className="bg-gray-1 py-16">
+    <section className="retro-mint border-y-[4px] border-double border-ink py-16">
       <div className="wrap">
         <SectionTitle>Как проверяют корм</SectionTitle>
         <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {checks.map((c) => (
-            <div key={c.n} className="rounded-[16px] bg-white p-6">
-              <div className="text-[40px] font-extrabold leading-none text-violet-dark">{c.n}</div>
+            <div key={c.n} className="rounded-[14px] border-2 border-ink bg-white p-6 shadow-card">
+              <div className="retro-word text-[34px] leading-none">{c.n}</div>
               <h3 className="mt-4 text-lg font-bold">{c.title}</h3>
               <p className="mt-1 text-[15px] text-txt-2">{c.text}</p>
             </div>
@@ -504,12 +508,12 @@ function Checks() {
 
 function PostCard({ p, H = 'h3' }) {
   return (
-    <Link to={`blog/${p.slug}/`} className="group flex min-w-[260px] flex-col overflow-hidden rounded-[16px] border border-gray-2 bg-white text-left transition hover:shadow-card">
+    <Link to={`blog/${p.slug}/`} className="group flex min-w-[260px] flex-col overflow-hidden rounded-[14px] border-2 border-ink bg-white text-left shadow-card transition hover:translate-x-px hover:translate-y-px hover:shadow-[2px_2px_0_#2b2320]">
       <div className={cn('flex h-[150px] items-end justify-center overflow-hidden', p.tone)}>
         <img src={img(p.img)} {...IMG} loading="lazy" alt="" className="h-[130px] w-auto translate-y-3 transition group-hover:translate-y-0" />
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <span className="w-fit rounded-full bg-gray-1 px-2.5 py-0.5 text-xs lowercase">{p.tag}</span>
+        <span className="w-fit rounded-full border-[1.5px] border-ink bg-mint-soft px-2.5 py-0.5 text-xs font-semibold lowercase">{p.tag}</span>
         <H className="mt-3 text-lg font-bold leading-snug">{p.title}</H>
         <p className="mt-2 text-sm text-txt-2">{p.text}</p>
         <span className="mt-auto flex items-center gap-1 pt-4 text-sm text-txt-2"><Clock className="size-4" />{p.min} мин</span>
@@ -520,7 +524,7 @@ function PostCard({ p, H = 'h3' }) {
 
 // Кнопка «Все статьи»: пока ведёт на страницу блога, когда появится канал в Дзене — укажите contacts.dzen
 function AllPosts({ className }) {
-  const cls = cn('inline-flex h-11 shrink-0 items-center gap-1 rounded-[10px] bg-gray-1 px-5 text-sm font-semibold transition-colors hover:bg-gray-2', className)
+  const cls = cn('inline-flex h-11 shrink-0 items-center gap-1 rounded-[10px] border-2 border-ink bg-white px-5 text-sm font-bold shadow-[3px_3px_0_#2b2320] transition hover:translate-x-px hover:translate-y-px hover:shadow-[2px_2px_0_#2b2320]', className)
   const inner = <>Все статьи <ChevronRight className="size-4" /></>
   return contacts.dzen ? <a href={contacts.dzen} target="_blank" rel="noopener" className={cls}>{inner}</a> : <Link to={pages.blog.path} className={cls}>{inner}</Link>
 }
@@ -604,7 +608,7 @@ function Field({ err, label, children }) {
 
 function Contacts({ topic, setTopic, as = 'h2', title = 'Связаться с нами' }) {
   return (
-    <section id="form" className="scroll-mt-44 bg-gray-1 py-16">
+    <section id="form" className="retro-paper scroll-mt-44 border-y-[4px] border-double border-ink py-16">
       <div className="wrap">
         <SectionTitle as={as}>{title}</SectionTitle>
         <Tabs value={topic} onValueChange={setTopic} className="mt-6 gap-6">
@@ -615,7 +619,7 @@ function Contacts({ topic, setTopic, as = 'h2', title = 'Связаться с �
           </TabsList>
           {contactTopics.map((t) => (
             <TabsContent key={t.id} value={t.id}>
-              <div className="grid gap-8 rounded-[20px] bg-white/60 p-6 md:grid-cols-[1fr_1.3fr] md:p-10">
+              <div className="grid gap-8 rounded-[14px] border-2 border-ink bg-white p-6 shadow-card md:grid-cols-[1fr_1.3fr] md:p-10">
                 <div>
                   <h3 className="text-2xl font-extrabold">{cap(t.label)}</h3>
                   <p className="mt-3 text-[17px] leading-relaxed text-txt-2">{t.text}</p>
@@ -642,11 +646,11 @@ function FaqList({ limit, as = 'h2', title = 'Частые вопросы' }) {
   return (
     <section className="wrap py-16">
       <SectionTitle as={as}>{title}</SectionTitle>
-      <div className="mt-6 max-w-[900px] divide-y divide-gray-2 border-y border-gray-2">
+      <div className="mt-6 max-w-[900px] space-y-3">
         {list.map((f) => (
-          <details key={f.q} className="group">
+          <details key={f.q} className="group rounded-[12px] border-2 border-ink bg-white px-5 open:bg-mint-soft">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-left text-[17px] font-semibold [&::-webkit-details-marker]:hidden">
-              {f.q}<Plus className="size-5 shrink-0 transition group-open:rotate-45" />
+              {f.q}<span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-tang text-white"><Plus className="size-5 transition group-open:rotate-45" /></span>
             </summary>
             <p className="pb-5 text-[15px] leading-relaxed text-txt-2">{f.a}</p>
           </details>
@@ -661,7 +665,7 @@ function SeoText() {
   return (
     <section className="wrap pb-16">
       <div className="max-w-[900px] text-[15px] leading-relaxed text-txt-2">
-        <h2 className="mb-3 text-xl font-bold text-ink">Купить корм «Хвостик» в Санкт-Петербурге</h2>
+        <h2 className="mb-3 text-xl text-ink">Купить корм «Хвостик» в Санкт-Петербурге</h2>
         <p>
           В нашем магазине — вся линейка сухих кормов «Хвостик» от Саратовского кормового завода: четыре рецепта Хвостик.МЯУ для кошек и четыре рецепта Хвостик.ГАВ для собак.
           Корма для кошек продаются в пакетах 1,5 кг и 10 кг, для собак — 2 кг, 10 кг и 15 кг. Доставка бесплатная: привезём заказ в пункт выдачи 5Post в Санкт-Петербурге — постамат или кассу «Пятёрочки» и «Перекрёстка».
@@ -680,7 +684,7 @@ function KindPage({ kind }) {
     <>
       <Crumbs items={[[k.menu, k.path]]} />
       <div className="wrap pb-8 pt-4">
-        <h1 className="text-[30px] font-extrabold leading-tight tracking-tight md:text-[44px]">{k.h1}</h1>
+        <h1 className="text-[30px] leading-tight md:text-[44px]">{k.h1}</h1>
         <p className="mt-3 max-w-[760px] text-[17px] text-txt-2">{k.intro}</p>
       </div>
       <Catalog filter={filter} setFilter={setFilter} fixedKind={kind} title={`Все рецепты ${kinds[kind].h1.split(' ').pop()}`} />
@@ -769,7 +773,7 @@ function ProductPage({ p }) {
           )}
         </div>
       </article>
-      <section className="bg-gray-1 py-14">
+      <section className="retro-mint border-y-[4px] border-double border-ink py-14">
         <div className="wrap">
           <h2 className="text-[26px] font-extrabold md:text-[32px]">Другие корма {p.line}</h2>
           <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">{related.map((x) => <ProductCard key={x.id} p={x} />)}</div>
@@ -803,7 +807,7 @@ function PostPage({ post }) {
         <p className="mt-4 text-lg text-txt-2">{post.text}</p>
         <div className="mt-6 space-y-4 text-[17px] leading-relaxed">{post.body.map((t) => <p key={t}>{t}</p>)}</div>
       </article>
-      <section className="bg-gray-1 py-14">
+      <section className="retro-mint border-y-[4px] border-double border-ink py-14">
         <div className="wrap">
           <h2 className="text-2xl font-extrabold">Корма по теме</h2>
           <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">{rel.map((x) => <ProductCard key={x.id} p={x} />)}</div>
@@ -824,16 +828,16 @@ function TextPage({ id, topic, setTopic }) {
         <section className="wrap pb-10 pt-4">
           <SectionTitle as="h1" sub="Интернет-магазин кормов «Хвостик» в Санкт-Петербурге. Отвечаем на вопросы о корме, заказе и доставке.">{pg.h1}</SectionTitle>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
-            <div className="rounded-[16px] bg-gray-1 p-6">
+            <div className="retro-paper rounded-[14px] border-2 border-ink p-6">
               <div className="text-sm text-txt-2">Телефон</div>
               <a href={contacts.phoneHref} className="mt-1 block text-xl font-bold">{contacts.phone}</a>
               <div className="mt-1 text-sm text-txt-2">{contacts.hours}</div>
             </div>
-            <div className="rounded-[16px] bg-gray-1 p-6">
+            <div className="retro-paper rounded-[14px] border-2 border-ink p-6">
               <div className="text-sm text-txt-2">Мессенджеры</div>
               <MessengerButtons className="mt-3" stack />
             </div>
-            <div className="rounded-[16px] bg-gray-1 p-6">
+            <div className="retro-paper rounded-[14px] border-2 border-ink p-6">
               <div className="text-sm text-txt-2">Продавец</div>
               <div className="mt-1 text-[15px]">{seller.name}<br />ОГРН {seller.ogrn}, ИНН {seller.inn}<br />{seller.address}</div>
               <div className="mt-2 text-sm"><a href={`mailto:${contacts.email}`} className="underline">{contacts.email}</a></div>
@@ -882,7 +886,7 @@ function Footer({ nav }) {
     ['Каталог', [['Корм для кошек', kinds.cat.path], ['Корм для собак', kinds.dog.path], ['Корм для котят', productPath(byId('myau-kitten'))], ['Корм для щенков', productPath(byId('gav-puppy'))]]],
   ]
   return (
-    <footer className="bg-ink pb-24 pt-14 text-white md:pb-10">
+    <footer className="border-t-[6px] border-double border-[#f3ead3] bg-ink pb-24 pt-14 text-white md:pb-10">
       <div className="wrap grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1.4fr]">
         <div className="col-span-2 lg:col-span-1">
           <Logo light />
@@ -900,7 +904,7 @@ function Footer({ nav }) {
         ))}
         <div>
           <div className="mb-3 font-semibold">Поговорим про питомцев</div>
-          <a href={contacts.phoneHref} className="whitespace-nowrap text-lg font-bold sm:text-2xl">{contacts.phone}</a>
+          <a href={contacts.phoneHref} className="whitespace-nowrap text-base font-bold min-[380px]:text-lg sm:text-2xl">{contacts.phone}</a>
           <p className="mt-1 text-sm text-white/70">{contacts.hours}</p>
           <div className="mt-4 flex gap-2">
             <a href={contacts.telegram} target="_blank" rel="noopener nofollow" aria-label="Telegram" className="rounded-[10px] bg-white/10 p-2.5 hover:bg-white/20"><TgIcon className="size-6" /></a>
@@ -964,7 +968,7 @@ function CookieBanner() {
   const policy = <Link to={pages.privacy.path} className="text-violet-dark underline">политике конфиденциальности</Link>
   return (
     <div role="region" aria-label="Cookie и персональные данные"
-      className="fixed inset-x-2 bottom-2 z-50 rounded-[14px] bg-white p-3 shadow-[0_8px_30px_rgba(46,44,56,.22)] sm:inset-x-auto sm:bottom-5 sm:left-5 sm:max-w-[460px] sm:rounded-[16px] sm:p-5">
+      className="fixed inset-x-2 bottom-2 z-50 rounded-[14px] border-2 border-ink bg-white p-3 shadow-card sm:inset-x-auto sm:bottom-5 sm:left-5 sm:max-w-[460px] sm:rounded-[16px] sm:p-5">
       {/* телефон: одна короткая строка и две маленькие кнопки */}
       <div className="flex items-center gap-2 sm:hidden">
         <p className="flex-1 text-[12px] leading-snug text-txt-2">Мы используем cookie и обрабатываем персональные данные. Подробнее — в {policy}.</p>
@@ -1028,7 +1032,7 @@ function Panels({ nav }) {
           </div>
           {!!st.items.length && (
             <div className="border-t border-gray-2 p-5">
-              <div className="mb-3 flex items-center gap-2 rounded-[10px] bg-violet-soft px-3 py-2 text-sm"><Truck className="size-4 text-violet-dark" />Бесплатная доставка до пункта 5Post</div>
+              <div className="mb-3 flex items-center gap-2 rounded-[10px] bg-mint-soft px-3 py-2 text-sm"><Truck className="size-4 text-violet-dark" />Бесплатная доставка до пункта 5Post</div>
               <div className="mb-4 space-y-1 text-lg">
                 {st.discount > 0 && <div className="flex justify-between text-sm text-txt-2"><span>Скидка по промокоду {st.promo.code}</span><span>−{rub(st.discount)}</span></div>}
                 <div className="flex justify-between"><span>Итого</span><b>{rub(st.discount ? st.totalWithDiscount : st.total)}</b></div>
@@ -1173,7 +1177,7 @@ function PromoBox() {
   if (!st.firstOrderEligible && !crmEnabled) return null
   if (st.promo) {
     return (
-      <div className="mb-4 flex items-center justify-between gap-2 rounded-[10px] bg-violet-soft px-4 py-3 text-[14px] font-semibold text-violet-dark">
+      <div className="mb-4 flex items-center justify-between gap-2 rounded-[10px] bg-mint-soft px-4 py-3 text-[14px] font-semibold text-violet-dark">
         <span>Промокод {st.promo.code} применён — скидка {st.promo.kind === 'fixed' ? rub(st.promo.value) : st.promo.value + '%'}</span>
         <button type="button" onClick={st.clearPromo} className="shrink-0 text-txt-2 underline">Убрать</button>
       </div>
@@ -1246,7 +1250,7 @@ function Login() {
   const where = sent?.channel === 'sms' ? `по смс на ${f.phone}` : `в ${channelNames[sent?.channel]} — аккаунт, привязанный к ${f.phone}`
   return (
     <form onSubmit={next} noValidate className="space-y-3">
-      <div className="mb-2 rounded-[14px] bg-violet-soft p-4 text-sm">Войдите, чтобы видеть свои заказы и избранное. Если к номеру привязан Telegram или Max, код придёт туда.</div>
+      <div className="mb-2 rounded-[14px] bg-mint-soft p-4 text-sm">Войдите, чтобы видеть свои заказы и избранное. Если к номеру привязан Telegram или Max, код придёт туда.</div>
       {step === 'phone' ? (
         <>
           <Input aria-label="Имя" autoComplete="name" placeholder="Имя" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} className="h-12 rounded-[10px] text-[16px]" />
@@ -1285,7 +1289,7 @@ function LinkedMessengers() {
           const on = linked.includes(c)
           return (
             <button key={c} type="button" onClick={() => toggle(c)} aria-pressed={on}
-              className={cn('flex h-11 items-center justify-center gap-2 rounded-[10px] text-sm font-semibold transition-colors', on ? 'bg-violet-soft text-violet-dark' : 'bg-gray-1 hover:bg-gray-2')}>
+              className={cn('flex h-11 items-center justify-center gap-2 rounded-[10px] text-sm font-semibold transition-colors', on ? 'bg-mint-soft text-violet-dark' : 'bg-gray-1 hover:bg-gray-2')}>
               <I className="size-6" />{channelNames[c]}{on && <span className="flex items-center gap-0.5 text-xs font-medium"><Check className="size-3.5" />подключён</span>}
             </button>
           )
@@ -1315,7 +1319,7 @@ function Profile({ nav }) {
         <div className="space-y-2">
           {st.orders.map((o) => (
             <div key={o.n} className="rounded-[14px] border border-gray-2 p-4">
-              <div className="flex items-center justify-between"><span className="flex items-center gap-2 font-semibold"><Package className="size-4" />Заказ №{o.n}</span><span className="rounded-full bg-violet-soft px-2 py-0.5 text-xs">Принят</span></div>
+              <div className="flex items-center justify-between"><span className="flex items-center gap-2 font-semibold"><Package className="size-4" />Заказ №{o.n}</span><span className="rounded-full bg-mint-soft px-2 py-0.5 text-xs">Принят</span></div>
               <div className="mt-1 text-sm text-txt-2">{o.date} · {o.items.reduce((s, i) => s + i.qty, 0)} шт. · {rub(o.total)}</div>
               <div className="mt-2 text-xs text-txt-2">{o.items.map((i) => `${i.line} ${i.w} ×${i.qty}`).join(', ')}</div>
             </div>

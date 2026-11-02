@@ -3,8 +3,8 @@
 // Цена = «Цена РРЦ в ТТ, руб с НДС» (округлено до рубля) + доставка, заложенная в товар:
 // фасовки до 2 кг включительно +200 ₽, больше 2 кг +350 ₽. На сайте доставка — бесплатная. Декларация — по карточкам дистрибьютора «КотМатрос».
 
-export const BASE = import.meta.env.BASE_URL // '/hvostik-shop/'
-export const SITE = 'https://kirgor32-lgtm.github.io/hvostik-shop' // без слэша в конце
+export const BASE = import.meta.env.BASE_URL // '/hvostik-retro/'
+export const SITE = 'https://kirgor32-lgtm.github.io/hvostik-retro' // без слэша в конце
 export const img = (name) => `${BASE}img/p/${name}.webp`
 
 // ⚠️ ЗАГЛУШКИ — заменить перед запуском (поиск: «ЗАГЛУШКА»)
