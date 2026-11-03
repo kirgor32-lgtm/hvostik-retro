@@ -101,9 +101,9 @@ function MessengerButtons({ className, stack }) {
 /* ---------------- логотип: тот же значок, что и иконка вкладки ---------------- */
 function Logo({ light, onClick }) {
   return (
-    <Link to="" onClick={onClick} className="flex shrink-0 items-center gap-2.5" aria-label="Хвостик — на главную">
-      <img src={`${BASE}${light ? 'logo-light.svg' : 'favicon.svg'}`} alt="" width="44" height="44" className="size-10 sm:size-11" />
-      <span className={cn('text-[15px] uppercase leading-none min-[400px]:text-[17px] sm:text-[21px]', light ? 'retro-word-light' : 'retro-word-sm')}>Хвостик</span>
+    <Link to="" onClick={onClick} className="flex shrink-0 items-center gap-2 min-[360px]:gap-2.5" aria-label="Хвостик — на главную">
+      <img src={`${BASE}${light ? 'logo-light.svg' : 'favicon.svg'}`} alt="" width="44" height="44" className="size-8 min-[360px]:size-10 sm:size-11" />
+      <span className={cn('text-[13px] min-[360px]:text-[15px] uppercase leading-none min-[400px]:text-[17px] sm:text-[21px]', light ? 'retro-word-light' : 'retro-word-sm')}>Хвостик</span>
     </Link>
   )
 }
@@ -303,7 +303,6 @@ function Hero({ nav }) {
           <img src={img('myau-steril')} {...IMG} alt="Упаковка корма Хвостик.МЯУ для стерилизованных кошек" fetchPriority="high" className="relative z-10 h-auto w-[68px] -rotate-6 drop-shadow-lg sm:w-[120px] xl:w-[190px]" />
           <img src={img('gav-small')} {...IMG} alt="Упаковка корма Хвостик.ГАВ для собак мелких пород" fetchPriority="high" className="-ml-3 h-auto w-[68px] rotate-3 drop-shadow-lg sm:-ml-4 sm:w-[120px] xl:w-[190px]" />
           <img src={img('myau-kitten')} {...IMG} alt="" className="-ml-6 hidden h-auto w-[160px] rotate-12 drop-shadow-lg xl:block" />
-          <div className="retro-seal absolute right-6 top-8 z-20 hidden size-[118px] lg:flex xl:right-10 xl:top-10 xl:size-[132px]"><b className="font-retro text-[26px] font-normal leading-none xl:text-[30px]">−10%</b><span className="mt-1 text-[11px] font-extrabold uppercase leading-tight">первый<br />заказ</span></div>
         </div>
       </div>
       <div className="no-scrollbar mt-4 grid grid-flow-col gap-3 overflow-x-auto pb-1 pr-1 md:grid-cols-4">
@@ -473,11 +472,11 @@ function Mission() {
           <Link to={pages.about.path} className="mt-6 inline-flex items-center gap-1 font-semibold text-[#9fd6cf] hover:text-white">О бренде и производителе <ChevronRight className="size-4" /></Link>
         </div>
         <div className="relative flex min-h-[260px] items-center justify-center overflow-hidden bg-tang [background-image:repeating-linear-gradient(45deg,rgba(255,250,240,.12)_0_1.5px,transparent_1.5px_8px)]">
-          <div className="grid grid-cols-2 gap-3 p-8 text-center">
+          <div className="grid w-full max-w-[400px] grid-cols-2 gap-3 p-5 text-center sm:p-8">
             {stats.map(([n, l]) => (
-              <div key={l} className="rounded-full border-2 border-dashed border-white/70 px-4 py-6">
-                <div className="font-retro text-[24px] leading-none">{n}</div>
-                <div className="mt-2 text-sm lowercase text-white">{l}</div>
+              <div key={l} className="stat flex aspect-square min-w-0 flex-col items-center justify-center rounded-full border-2 border-dashed border-white/70 px-[12%] [container-type:inline-size]">
+                <div className="whitespace-nowrap font-retro text-[min(13cqw,26px)] leading-none">{n}</div>
+                <div className="mt-[6cqw] text-[min(10cqw,14px)] lowercase leading-tight text-white">{l}</div>
               </div>
             ))}
           </div>
@@ -904,7 +903,7 @@ function Footer({ nav }) {
         ))}
         <div>
           <div className="mb-3 font-semibold">Поговорим про питомцев</div>
-          <a href={contacts.phoneHref} className="whitespace-nowrap text-base font-bold min-[380px]:text-lg sm:text-2xl">{contacts.phone}</a>
+          <a href={contacts.phoneHref} className="whitespace-nowrap text-[14px] font-bold min-[380px]:text-lg sm:text-2xl">{contacts.phone}</a>
           <p className="mt-1 text-sm text-white/70">{contacts.hours}</p>
           <div className="mt-4 flex gap-2">
             <a href={contacts.telegram} target="_blank" rel="noopener nofollow" aria-label="Telegram" className="rounded-[10px] bg-white/10 p-2.5 hover:bg-white/20"><TgIcon className="size-6" /></a>
