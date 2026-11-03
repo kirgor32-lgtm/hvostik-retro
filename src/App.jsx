@@ -562,14 +562,17 @@ function LeadForm({ topic, compact, onSubmit, cta = 'Отправить', doneTe
   const [f, setF] = useState({ name: st.user?.name || '', phone: st.user?.phone || '', msg: '', ok: false })
   const [err, setErr] = useState({})
   const [state, setState] = useState('form')
+  const sending = useRef(false) // защита от двойного нажатия: второй заказ не уйдёт
   const submit = (e) => {
     e.preventDefault()
+    if (sending.current) return
     const er = {}
     if (f.name.trim().length < 2) er.name = 'Введите имя'
     if (f.phone.replace(/\D/g, '').length !== 11) er.phone = 'Введите телефон полностью'
     if (!f.ok) er.ok = 'нужно согласие'
     setErr(er)
     if (Object.keys(er).length) return
+    sending.current = true
     setState('send')
     setTimeout(() => {
       if (onSubmit) onSubmit({ name: f.name.trim(), phone: f.phone })
@@ -588,7 +591,7 @@ function LeadForm({ topic, compact, onSubmit, cta = 'Отправить', doneTe
   return (
     <form onSubmit={submit} noValidate className="space-y-3">
       <div className="grid gap-3 sm:grid-cols-2">
-        <Field err={err.name} label="Имя"><Input autoComplete="name" placeholder="Имя" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} aria-invalid={!!err.name} className="h-12 rounded-[10px] bg-white text-[16px]" /></Field>
+        <Field err={err.name} label="Имя"><Input autoComplete="name" placeholder="Имя" maxLength={60} value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} aria-invalid={!!err.name} className="h-12 rounded-[10px] bg-white text-[16px]" /></Field>
         <Field err={err.phone} label="Телефон"><Input type="tel" autoComplete="tel" placeholder="Телефон" inputMode="tel" value={f.phone} onChange={(e) => setF({ ...f, phone: fmtPhone(e.target.value) })} aria-invalid={!!err.phone} className="h-12 rounded-[10px] bg-white text-[16px]" /></Field>
       </div>
       {!compact && <Textarea aria-label="Сообщение" placeholder={topic === 'order' ? 'Номер заказа и что случилось' : 'Сообщение (необязательно)'} value={f.msg} onChange={(e) => setF({ ...f, msg: e.target.value })} className="min-h-24 rounded-[10px] bg-white text-[16px]" />}
