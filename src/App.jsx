@@ -241,7 +241,6 @@ function IconBtn({ children, label, n, dot, onClick }) {
 function SectionTitle({ children, sub, as: H = 'h2' }) {
   return (
     <div>
-      <div aria-hidden className="mb-2 text-[13px] tracking-[.45em] text-tang">★ ★ ★</div>
       <H className="text-balance font-retro text-[22px] font-normal uppercase leading-[1.15] md:text-[32px]">{children}</H>
       {sub && <p className="mt-3 max-w-[680px] text-[17px] text-txt-2">{sub}</p>}
     </div>
@@ -292,7 +291,7 @@ function Hero({ nav }) {
           <p className="col-start-1 mt-2 self-end text-[13px] leading-snug text-txt-2 sm:hidden">8 рецептов · от {minAll} ₽ · бесплатная доставка</p>
           <div className="retro-ribbon mt-5 hidden h-10 w-fit items-center bg-ink font-serif text-[15px] font-bold uppercase tracking-[.15em] text-white sm:flex">8 рецептов · от {minAll} ₽</div>
           <p className="mt-4 hidden max-w-[470px] text-lg leading-snug sm:block xl:text-xl">
-            Хвостик.МЯУ и Хвостик.ГАВ — восемь сухих рецептов: для взрослых, котят, щенков, стерилизованных кошек и мелких пород. От {minAll} ₽.
+            Хвостик.МЯУ для кошек и Хвостик.ГАВ для собак. Есть рецепты для взрослых, котят, щенков, стерилизованных кошек и мелких пород.
           </p>
           <div className="col-start-1 mt-3 flex min-w-0 flex-col gap-2 self-start sm:mt-8 sm:flex-row sm:flex-wrap sm:gap-3">
             <Link to={kinds.cat.path} className={cn(inkBtn, 'flex h-10 items-center justify-center px-3 text-[14px] sm:h-[52px] sm:px-7 sm:text-base')}>Корм для кошек</Link>
@@ -331,7 +330,7 @@ function Benefits() {
   return (
     <section className="wrap py-16">
       <SectionTitle>Почему «Хвостик»</SectionTitle>
-      <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid gap-3 md:grid-cols-3">
         {benefits.map((b) => {
           const I = icons[b.icon]
           return (
@@ -464,10 +463,10 @@ function Mission() {
     <section className="wrap py-16">
       <div className="grid overflow-hidden rounded-[14px] border-[5px] border-[#f3ead3] bg-ink text-white shadow-[0_0_0_2px_#2b2320] md:grid-cols-[1.2fr_1fr]">
         <div className="p-8 md:p-14">
-          <span className="font-script text-xl text-[#9fd6cf]">Наша миссия</span>
-          <h2 className="mt-4 text-[28px] font-extrabold leading-[1.08] md:text-[42px]">Радовать каждого хвостатого — от первой гранулы до пустой миски</h2>
+          <span className="font-script text-xl text-[#9fd6cf]">О бренде</span>
+          <h2 className="mt-4 text-[28px] font-extrabold leading-[1.08] md:text-[42px]">Сухие корма Саратовского кормового завода</h2>
           <p className="mt-6 max-w-[520px] text-lg text-white/80">
-            Корм, который не просто насыщает, а помогает питомцу жить здоровой и активной жизнью. Полнорационные рецепты с натуральным мясом от российского завода.
+            Полнорационные рецепты с мясом для кошек и собак разного возраста. Мы продаём их в Петербурге и бесплатно привозим в пункты 5Post.
           </p>
           <Link to={pages.about.path} className="mt-6 inline-flex items-center gap-1 font-semibold text-[#9fd6cf] hover:text-white">О бренде и производителе <ChevronRight className="size-4" /></Link>
         </div>
@@ -515,7 +514,7 @@ function PostCard({ p, H = 'h3' }) {
         <span className="w-fit rounded-full border-[1.5px] border-ink bg-mint-soft px-2.5 py-0.5 text-xs font-semibold lowercase">{p.tag}</span>
         <H className="mt-3 text-lg font-bold leading-snug">{p.title}</H>
         <p className="mt-2 text-sm text-txt-2">{p.text}</p>
-        <span className="mt-auto flex items-center gap-1 pt-4 text-sm text-txt-2"><Clock className="size-4" />{p.min} мин</span>
+        
       </div>
     </Link>
   )
@@ -583,7 +582,7 @@ function LeadForm({ topic, compact, onSubmit, cta = 'Отправить', doneTe
       <div className="rounded-[16px] bg-white p-8 text-center">
         <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-violet-dark text-white"><Check className="size-7" /></div>
         <h3 className="mt-4 text-2xl font-extrabold">Спасибо, {f.name.trim()}!</h3>
-        <p className="mt-2 text-txt-2">{doneText || 'Мы на связи — ответим и поможем подобрать то, что понравится питомцу.'}{crmEnabled ? '' : ' Это демо — заявка никуда не ушла.'}</p>
+        <p className="mt-2 text-txt-2">{doneText || 'Спасибо, скоро ответим.'}{crmEnabled ? '' : ' Это демо — заявка никуда не ушла.'}</p>
       </div>
     )
   return (
@@ -801,7 +800,7 @@ function PostPage({ post }) {
     <>
       <Crumbs items={[['Блог', pages.blog.path], [post.title, `blog/${post.slug}/`]]} />
       <article className="wrap max-w-[820px] pb-12 pt-4">
-        <span className="rounded-full bg-gray-1 px-2.5 py-0.5 text-xs lowercase">{post.tag} · {post.min} мин</span>
+        <span className="rounded-full bg-gray-1 px-2.5 py-0.5 text-xs lowercase">{post.tag}</span>
         <h1 className="mt-4 text-[30px] font-extrabold leading-tight tracking-tight md:text-[42px]">{post.title}</h1>
         <p className="mt-4 text-lg text-txt-2">{post.text}</p>
         <div className="mt-6 space-y-4 text-[17px] leading-relaxed">{post.body.map((t) => <p key={t}>{t}</p>)}</div>
@@ -868,7 +867,7 @@ function NotFound() {
   return (
     <section className="wrap py-24 text-center">
       <h1 className="text-[40px] font-extrabold">Страница не найдена</h1>
-      <p className="mt-3 text-lg text-txt-2">Возможно, корм переехал на другой адрес.</p>
+      <p className="mt-3 text-lg text-txt-2">Такой страницы нет. Возможно, адрес изменился.</p>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Link to={kinds.cat.path} className={cn(inkBtn, 'flex items-center')}>Корм для кошек</Link>
         <Link to={kinds.dog.path} className={cn(inkBtn, 'flex items-center')}>Корм для собак</Link>
@@ -1008,9 +1007,9 @@ function Panels({ nav }) {
     <>
       <Sheet open={st.panel === 'cart'} onOpenChange={(o) => !o && close()}>
         <SheetContent className={side}>
-          {head('Корзина', st.count ? `${st.count} шт. на ${rub(st.total)}` : 'Пока пусто — порадуем питомца?')}
+          {head('Корзина', st.count ? `${st.count} шт. на ${rub(st.total)}` : 'Здесь пока пусто')}
           <div className="flex-1 space-y-3 overflow-y-auto p-5">
-            {!st.items.length && <Empty icon={ShoppingBag} text="загляните в каталог — там точно найдётся что-то по вкусу" action={toCatalog} />}
+            {!st.items.length && <Empty icon={ShoppingBag} text="Добавьте корм из каталога" action={toCatalog} />}
             {st.items.map((i) => (
               <div key={i.key} className="flex gap-3 rounded-[14px] bg-gray-1 p-3">
                 <div className="flex size-20 shrink-0 items-center justify-center rounded-[10px] bg-white p-1"><img src={img(i.id)} alt="" className="max-h-full w-auto" /></div>
@@ -1046,7 +1045,7 @@ function Panels({ nav }) {
         <SheetContent className={side}>
           {head('Избранное', favs.length ? `${favs.length} шт.` : 'Пока пусто')}
           <div className="flex-1 space-y-3 overflow-y-auto p-5">
-            {!favs.length && <Empty icon={Heart} text="нажмите ♡ на понравившемся корме — сохраним для вашего питомца" action={toCatalog} />}
+            {!favs.length && <Empty icon={Heart} text="Нажмите ♡ на карточке корма, и он появится здесь" action={toCatalog} />}
             {favs.map((p) => {
               const v = p.weights[p.weights.length > 2 ? 1 : 0]
               return (
